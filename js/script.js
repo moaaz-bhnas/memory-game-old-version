@@ -139,7 +139,7 @@ resetButton.addEventListener('click', function reset() {
     moves = 0;
     logMovesRecord( moves );
     setTimeout(shuffleCards, flippingTime);
-});
+})
 
 
 
