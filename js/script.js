@@ -60,7 +60,7 @@ const logMovesRecord = ( moves ) => {
     }  
 }
 
-shuffleCards();
+// shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     const noTwoCardsFlippedForTesting = secondCard === undefined;
