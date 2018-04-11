@@ -1,0 +1,265 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font: 1rem/1.2 'Boogaloo', cursive;
+    color: #275858;
+    text-align: center;
+    background: #cae7e7;
+}
+
+ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* ==============================================
+    Title
+================================================= */
+.title {
+    font-size: 1.9rem;
+    line-height: 1.1;
+    text-align: center;
+    margin: .3em 0 .65em;
+}
+
+@media screen and (min-width: 260px) {
+    .title {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (min-width: 380px) {
+    .title {
+        font-size: 3rem;
+    }
+}
+
+/* ==============================================
+    Moves Record
+================================================= */
+.moves-record {
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+body > .moves-record {
+    display: inline-block;
+}
+
+.spot {
+    background-color: #60b8b8;
+    padding: .4em .5em;
+    border: .15em solid;
+    border-radius: 1em;
+}
+
+
+/* ==============================================
+    Grid
+================================================= */
+.grid {
+    text-align: left;
+    background-color: #60b8b8;
+    width: 100vw;    height: 100vw;
+    margin-left: auto;    margin-right: auto;
+    border-radius: .5rem;
+    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    
+    perspective: 400px;
+}
+
+/* --- Cards --- */
+.card {
+    width: 22%;    height: 22%;
+    border-radius: .5rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.59,1.39,.6,1.01);
+}
+
+.flip {
+    transform: rotateY(180deg);
+    cursor: default;
+}
+
+
+/* --- Back - Image --- */
+.back {
+    width: 99%;    height: 99%;
+    object-fit: cover;
+    object-position: 50% 0%;
+    transform: rotateY(-180deg);
+    background-color: #fff;
+}
+
+/* --- Front --- */
+.front {
+    width: 100%;    height: 100%;
+    background-color: #275858;
+    backface-visibility: hidden;
+    cursor: pointer;
+}
+
+.front,
+.back {
+    position: absolute;
+    border-radius: .5rem;
+}
+
+/* ==============================================
+    Modal
+================================================= */
+.modal {
+    background-color: #fff;
+    border-radius: 1rem;
+    padding: .5rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 0 50px 10px rgba(0, 0, 0, .5);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    position: fixed;
+    top: 50%;    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform .5s,
+                opacity .5s;
+}
+
+.pop-up {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* --- Expression --- */
+.expression {
+    max-width: 150px;    height: 150px;
+    padding: 1rem;
+}
+
+@media screen and (min-width: 380px) {
+    .expression {
+        max-width: 200px;    height: 200px;
+    }
+}
+
+/* --- Moves & Restart --- */
+.reset {
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.fa-undo {
+    transition: transform .3s;
+}
+
+.reset:hover .fa-undo {
+    transform: rotateZ(-20deg);
+}
+
+/* ==============================================
+    Keyframes
+================================================= */
+@keyframes success-flash {
+    0% {
+        background-color: #B8FCC0;
+    }
+    30% {
+        background-color: #B8FCC0;
+    }
+    30.1% {
+        background-color: #fff;
+    }
+    60% {
+        background-color: #fff;
+    }
+    60.1% {
+        background-color: #B8FCC0;
+    }
+    100% {
+        background-color: #B8FCC0;
+    }
+}
+
+@keyframes failure-flash {
+    0% {
+        background-color: #FCB8B8;
+    }
+    30% {
+        background-color: #FCB8B8;
+    }
+    30.1% {
+        background-color: #fff;
+    }
+    60% {
+        background-color: #fff;
+    }
+    60.1% {
+        background-color: #FCB8B8;
+    }
+    100% {
+        background-color: #FCB8B8;
+    }
+}
+
+.success-flash {
+    animation: success-flash .6s forwards;
+}
+
+.failure-flash {
+    animation: failure-flash .6s forwards;
+}
+
+/* ==============================================
+    Media Queries
+================================================= */
+@media screen and (min-width: 330px) {
+    /* --- Game Grid Dimensions --- */
+    .grid {
+        width: 96vw;    height: 96vw;
+    }
+}
+
+@media screen and (min-width: 470px) {
+    html {
+        font-size: 1.1rem;
+    }
+    /* --- Game Grid Dimensions --- */
+    .grid {
+        max-width: 450px;    max-height: 450px;
+    }
+    /* --- Cards Dimensions --- */
+    .card {
+        width: 21%;    height: 21%;
+    }
+}
+
+@media screen and (min-width: 680px) {
+    html {
+        font-size: 1.2rem;
+    }
+}
+
+
+
+
+
+
