@@ -105,9 +105,7 @@ grid.addEventListener('click', function( event ) {
                                                 expression.setAttribute('src', 'img/what.png');
                                             }
                                         })();
-                                        setTimeOut(function() {
-                                            modal.classList.add('pop-up');
-                                        }, 200);
+                                        modal.classList.add('pop-up');
                                     })();
                                 }
                             } else {
