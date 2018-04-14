@@ -94,7 +94,7 @@ grid.addEventListener('click', function( event ) {
                                 const rightCards = document.querySelectorAll('.flip');
                                 if (rightCards.length === 16) {
                                     (function popUp() {
-                                        (function chooseExpression() {
+                                        (function expressionPicker() {
                                             const expression = document.querySelector('.expression');
                                             if (moves <= 12) {
                                                 expression.setAttribute('src', 'img/dude.png');
