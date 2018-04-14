@@ -7,7 +7,8 @@ const grid = document.querySelector('.grid'),
       resetButton = document.querySelector('.reset'),
       cardsNumber = grid.children.length,
       flippingTime = 550,
-      flashTime = 600;
+      flashTime = 600,
+      timeToReloadTheImage = 0;
 
 let firstCard, secondCard, firstImage, secondImage,
     moves = 0;
@@ -60,7 +61,7 @@ const logMovesRecord = ( moves ) => {
     }  
 }
 
-shuffleCards();
+//shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     const noTwoCardsFlippedForTesting = secondCard === undefined;
@@ -107,7 +108,7 @@ grid.addEventListener('click', function( event ) {
                                         })();
                                         setTimeout(function() {
                                             modal.classList.add('pop-up')
-                                        }, 200);
+                                        }, flashTime);
                                     })();
                                 }
                             } else {
