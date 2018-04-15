@@ -182,14 +182,14 @@ img {
 }
 
 /* --- Expression --- */
-img.expression {
+.expression-image {
     max-width: 150px;    height: 150px;
     margin: .8em 0 1em;
 }
 
 /*
 @media screen and (min-width: 380px) {
-    img.expression {
+    .expression-image {
         max-width: 200px;    height: 200px;
     }
 }
@@ -198,7 +198,7 @@ img.expression {
 /* ==============================================
     Animation
 ================================================= */
-@keyframes success-flash {
+@keyframes true-flash {
     0% {
         background-color: #B8FCC0;
     }
@@ -219,7 +219,7 @@ img.expression {
     }
 }
 
-@keyframes failure-flash {
+@keyframes false-flash {
     0% {
         background-color: #FCB8B8;
     }
@@ -240,12 +240,12 @@ img.expression {
     }
 }
 
-.success-flash {
-    animation: success-flash .6s forwards;
+.true-flash {
+    animation: true-flash .6s forwards;
 }
 
-.failure-flash {
-    animation: failure-flash .6s forwards;
+.false-flash {
+    animation: false-flash .6s forwards;
 }
 
 /* ==============================================
@@ -271,9 +271,9 @@ img.expression {
     }
 }
 
-/* --- Image Expression (not bad - DUDE!) --- */
+/* --- Image Expression (not bad - DUDE! ..) --- */
 @media screen and (min-width: 380px) {
-    img.expression {
+    .expression-image {
         max-width: 200px;    height: 200px;
     }
 }
@@ -331,5 +331,11 @@ img.expression {
 .modal {
     max-width: 450px;
 }
+
+
+
+
+
+
 
 */

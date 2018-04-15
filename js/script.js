@@ -1,41 +1,32 @@
-/* =================================================
-    Game Grid
-==================================================== */
 const grid = document.querySelector('.grid'),
       cards = document.querySelectorAll('.card'),
-      modal = document.querySelector('.modal'),
-      resetButtons = document.querySelectorAll('.reset'),
       cardsNumber = grid.children.length,
+      movesRecords = document.querySelectorAll('.moves-record'),
+      timeRecord = document.querySelector('.timer'),
+      starsRecords = document.querySelectorAll('.stars'),
+      resetButtons = document.querySelectorAll('.reset'),
+      modal = document.querySelector('.modal'), 
+      timeInWordsRecord = document.querySelector('.time-in-words'),
+      expressionImage = document.querySelector('.expression-image'),
       flippingTime = 550,
-      flashTime = 600,
-      timeToReloadTheImage = 0,
-      timer = document.querySelector('.timer'),
-      periodEl = document.querySelector('.period'),
-      ratings = document.querySelectorAll('.stars');
+      flashTime = 600;
+  
 
-let firstCard, secondCard, firstImage, secondImage,
+let firstCard, secondCard, firstImage, secondImage, // Variables to store cards inside for testing
     moves = 0,
     seconds = 0,
     minutes = 0,
-    time, period, startTimer,
-    clickAllowed = true,
+    time, timeInWords,
+    timerStarter,
+    finishedResetting = true,
     star, starsNumber;
 
-const zeroPadded = num => {
+const zeroPadded = num => { // 5 => 05
     if ( num < 10 )
         num = '0' + num;
     return num;
 }
-const timeCounter = () => {
-    seconds++;
-    if (seconds === 60) {
-        minutes++;
-        seconds = 0;
-    }
-    time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
-    timer.textContent = time;
-}
-const shuffleCards = () => {
+const shuffleCards = () => { 
     const randomNumbers = [];
     for (let i = 0; i < cardsNumber; i++) {
         let randomNumber;
@@ -45,7 +36,7 @@ const shuffleCards = () => {
         grid.appendChild(grid.children[randomNumber]);
         randomNumbers.push(randomNumber);
     }
-    clickAllowed = true;
+    finishedResetting = true;
 }
 const flip = (...nodes) => {
     for (const node of nodes) {
@@ -57,128 +48,161 @@ const unflip = (...nodes) => {
         node.classList.remove('flip');
     }
 }
-const successFlash = (...nodes) => {
+const trueFlash = (...nodes) => {
     for (const node of nodes) {
-        node.classList.add('success-flash');
+        node.classList.add('true-flash');
     }
 }
-const failureFlash = (...nodes) => {
+const falseFlash = (...nodes) => {
     for (const node of nodes) {
-        node.classList.add('failure-flash')
+        node.classList.add('false-flash')
     }
 }
-const removeSuccessFlash = (...nodes) => {
+const removeTrueFlash = (...nodes) => {
     for (const node of nodes) {
-        node.classList.remove('success-flash')
+        node.classList.remove('true-flash')
     }
 }
-const removeFailureFlash = (...nodes) => {
+const removeFalseFlash = (...nodes) => {
     for (const node of nodes) {
-        node.classList.remove('failure-flash')
+        node.classList.remove('false-flash')
     }
 }
-const logMovesRecord = ( moves ) => {
-    const records = document.querySelectorAll('.moves-record');
-    for (const record of records) {
+const logMovesRecord = moves => {
+    for (const record of movesRecords) {
         record.textContent = moves + ((moves === 1) ? ' move' : ' moves');
     }  
 }
-const removeStar = nodeList => {
-    for (const node of nodeList) {
-        star = node.lastElementChild;
+const logTimeRecord = (minutes, seconds) => {
+    time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
+    timeRecord.textContent = time;
+}
+const removeStar = starsRecords => {
+    for (const record of starsRecords) {
+        star = record.lastElementChild;
         star.remove();
     }
 }
 const resetStars = () => {
-    for (const rating of ratings) {
-        rating.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+    for (const record of starsRecords) {
+        record.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
     }
 }
 
-shuffleCards();
+//shuffleCards();
+
+let noTwoCardsFlippedForTesting,
+    currentCard, 
+    currentCardIsNotFlipped,
+    secondCardIsFlipped,
+    rightCards;
+
+const startTimer = () => {
+    if (timeRecord.textContent === '00:00') {
+        seconds++;
+        logTimeRecord(minutes, seconds);
+        timerStarter = setInterval(timeCounter, 1000);
+    }
+}
+const timeCounter = () => { // 00:05 => 00:06 => 00:07 ..
+    seconds++;
+    if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+    }
+    logTimeRecord(minutes, seconds);
+}
+const prepareCardsForTesting = () => {
+    if (firstCard === undefined) { // empty
+        firstCard = currentCard;
+        firstImage = currentCard.querySelector('img');
+    } else { 
+        secondCard = currentCard;
+        secondImage = currentCard.querySelector('img');
+    }
+}
+const countMoves = () => {
+    moves++;
+    logMovesRecord( moves );
+}
+const determineStarsAndExpression = () => {
+    starsNumber = starsRecords[0].children.length;
+    if (moves > 12 && starsNumber === 3) {
+        removeStar(starsRecords);
+        expressionImage.setAttribute('src', 'img/great.png');
+    } else if (moves > 16 && starsNumber === 2) {
+        removeStar(starsRecords);
+        expressionImage.setAttribute('src', 'img/not-bad.png');
+    } else if (moves > 20 && starsNumber === 1) {
+        removeStar(starsRecords);
+        expressionImage.setAttribute('src', 'img/what.png');
+    }
+}
+const test = () => {
+    const sameCharacter = firstImage.getAttribute('src') === secondImage.getAttribute('src');
+    if ( sameCharacter ) {
+        trueFlash(firstImage, secondImage);
+        lastPairTest();
+    } else {
+        falseFlash(firstImage, secondImage);
+        setTimeout(removeFalseEffects, flashTime); // Wait until the flash effect ends,then flip.
+    }
+    emptyVariablesForSecondMove();
+}
+const lastPairTest = () => {
+    rightCards = document.querySelectorAll('.flip');
+    if (rightCards.length === 16) {
+        clearInterval(timerStarter);
+        popUp();
+    }
+}
+const popUp = () => {
+    determineTimeInWords();
+    setTimeout(function() {
+        modal.classList.add('pop-up')
+    }, flashTime);
+}
+const determineTimeInWords = () => {
+    if (minutes > 0 && seconds > 0) {
+        timeInWords = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'} and ${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
+    } else if (minutes > 0 && seconds === 0) {
+        timeInWords = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'}`;
+    } else {
+        timeInWords = `${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
+    }
+    timeInWordsRecord.textContent = timeInWords;
+}
+const removeFalseEffects = () => {
+    unflip(firstCard, secondCard);
+    removeFalseFlash(firstImage, secondImage);
+}
+const removetrueEffects = () => {
+    for (const card of cards) {
+        unflip(card);
+        removeTrueFlash(card);
+    }
+}
+const emptyVariablesForSecondMove = () => {
+    setTimeout(function() {
+        firstCard = secondCard = undefined;
+    }, flashTime); // Wait until the flash ends, so we still can function on them (unflip).
+}
 
 grid.addEventListener('click', function( event ) {
-    const noTwoCardsFlippedForTesting = secondCard === undefined;
-    if ( noTwoCardsFlippedForTesting && clickAllowed ) { // Making sure that the user doesn't flip a third card while two are being tested.
+    noTwoCardsFlippedForTesting = secondCard === undefined; // The second variable is empty
+    if ( noTwoCardsFlippedForTesting && finishedResetting ) { 
         if ( event.target.parentElement.nodeName === 'LI') {
-            const currentCard = event.target.parentElement;
-            const currentCardIsFlipped = currentCard.classList.contains('flip');
-            if ( currentCardIsFlipped === false ) { // Don't allow testing already flipped card
+            currentCard = event.target.parentElement;
+            currentCardIsNotFlipped = !currentCard.classList.contains('flip');
+            if ( currentCardIsNotFlipped ) { // Don't flip already flipped card
                 flip(currentCard);
-                if (timer.textContent === '00:00') {
-                    seconds++;
-                    time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
-                    timer.textContent = time;
-                    startTimer = setInterval(timeCounter, 1000);
-                }
-                
-                const PackingVariablesForTesting = () => {
-                    if (firstCard === undefined) { // empty
-                        firstCard = currentCard;
-                        firstImage = currentCard.querySelector('img');
-                    } else { 
-                        secondCard = currentCard;
-                        secondImage = currentCard.querySelector('img');
-                        moves++;
-                        logMovesRecord( moves );
-                        starsNumber = ratings[0].children.length;
-                        if (moves > 12 && starsNumber === 3) {
-                            removeStar(ratings);
-                        } else if (moves > 16 && starsNumber === 2) {
-                            removeStar(ratings);
-                        }
-                    }
-                    return secondCard;
-                }
-                const TwoCardsAreReady = PackingVariablesForTesting();
-                if ( TwoCardsAreReady ) {
-                    setTimeout(function() {
-                        (function testAndRespond() {
-                            const sameCharacter = firstImage.getAttribute('src') === secondImage.getAttribute('src');
-                            if ( sameCharacter ) {
-                                successFlash(firstImage, secondImage);
-                                const rightCards = document.querySelectorAll('.flip');
-                                if (rightCards.length === 16) {
-                                    clearInterval(startTimer);
-                                    (function popUp() {
-                                        (function expressionPicker() {
-                                            const expression = document.querySelector('.expression');
-                                            if (moves <= 12) {
-                                                expression.setAttribute('src', 'img/dude.png');
-                                            } else if (moves <= 16) {
-                                                expression.setAttribute('src', 'img/great.png');
-                                            } else if (moves <= 20) {
-                                                expression.setAttribute('src', 'img/not-bad.png');
-                                            } else {
-                                                expression.setAttribute('src', 'img/what.png');
-                                            }
-                                            if (minutes > 0 && seconds > 0) {
-                                                period = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'} and ${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
-                                            } else if (minutes > 0 && seconds === 0) {
-                                                period = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'}`;
-                                            } else {
-                                                period = `${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
-                                            }
-                                            periodEl.textContent = period;
-                                        })();
-                                        setTimeout(function() {
-                                            modal.classList.add('pop-up')
-                                        }, flashTime);
-                                    })();
-                                }
-                            } else {
-                                failureFlash(firstImage, secondImage);
-
-                                setTimeout(function removeFailureEffetcs() {
-                                    unflip(firstCard, secondCard);
-                                    removeFailureFlash(firstImage, secondImage);
-                                }, flashTime); // Wait until the flash effect ends.
-                            }
-                        })();
-                        setTimeout(function emptyVariablesForSecondMove() {
-                            firstCard = secondCard = undefined;
-                        }, flashTime); // Wait until the flash ends, so we still can function on them (unflip).
-                    }, flippingTime); // Wait until the second card flips, and then start testing and responding.
+                startTimer();
+                prepareCardsForTesting();
+                secondCardIsFlipped = secondCard !== undefined;
+                if ( secondCardIsFlipped ) {
+                    countMoves();
+                    determineStarsAndExpression();
+                    setTimeout(test, flippingTime); // Wait until the second card flips, and then start testing and responding.
                 }
             }
         }
@@ -187,18 +211,14 @@ grid.addEventListener('click', function( event ) {
 
 /* --- Restart --- */
 const reset = () => {
-    for (const card of cards) {
-        unflip(card);
-        removeSuccessFlash(card.querySelector('img'));
-    }
+    removetrueEffects();
     modal.classList.remove('pop-up');
     moves = seconds = minutes = 0;
     logMovesRecord( moves );
-    time = `${zeroPadded(seconds)}:${zeroPadded(minutes)}`;
-    timer.textContent = time;
-    clearInterval(startTimer);
-    firstCard = undefined;
-    clickAllowed = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
+    logTimeRecord(minutes, seconds);
+    clearInterval(timerStarter);
+    firstCard = undefined;  
+    finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
     resetStars();
     setTimeout(shuffleCards, flippingTime);
 }
