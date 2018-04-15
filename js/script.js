@@ -63,6 +63,16 @@ const falseFlash = (...nodes) => {
         node.classList.add('false-flash')
     }
 }
+const removeFalseEffects = () => {
+    unflip(firstCard, secondCard);
+    removeFalseFlash(firstImage, secondImage);
+}
+const removetrueEffects = () => {
+    for (const card of cards) {
+        unflip(card);
+        removeTrueFlash(card);
+    }
+}
 const removeTrueFlash = (...nodes) => {
     for (const node of nodes) {
         node.classList.remove('true-flash')
@@ -168,16 +178,6 @@ const determineTimeInWords = () => {
     }
     timeInWordsRecord.textContent = timeInWords;
 }
-const removeFalseEffects = () => {
-    unflip(firstCard, secondCard);
-    removeFalseFlash(firstImage, secondImage);
-}
-const removetrueEffects = () => {
-    for (const card of cards) {
-        unflip(card);
-        removeTrueFlash(card);
-    }
-}
 const emptyVariablesForSecondMove = () => {
     setTimeout(function() {
         firstCard = secondCard = undefined;
@@ -196,7 +196,7 @@ const reset = () => {
     setTimeout(shuffleCards, flippingTime);
 }
 
-shuffleCards();
+//shuffleCards();
 
 /* --- Events --- */
 grid.addEventListener('click', function( event ) {
