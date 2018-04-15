@@ -82,7 +82,7 @@ const logMovesRecord = moves => {
         record.textContent = moves + ((moves === 1) ? ' move' : ' moves');
     }  
 }
-const timeCounter = () => { // 00:05 => 00:06 => 00:07 ..
+const countTime = () => { // 00:05 => 00:06 => 00:07 ..
     seconds++;
     if (seconds === 60) {
         minutes++;
@@ -109,7 +109,7 @@ const startTimer = () => {
     if (timeRecord.textContent === '00:00') {
         seconds++;
         logTimeRecord(minutes, seconds);
-        timerStarter = setInterval(timeCounter, 1000);
+        timerStarter = setInterval(countTime, 1000);
     }
 }
 const prepareCardsForTesting = () => {
@@ -198,6 +198,7 @@ const reset = () => {
 
 shuffleCards();
 
+/* --- Events --- */
 grid.addEventListener('click', function( event ) {
     noTwoCardsFlippedForTesting = secondCard === undefined; // The second variable is empty
     if ( noTwoCardsFlippedForTesting && finishedResetting ) { 
