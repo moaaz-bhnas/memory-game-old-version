@@ -19,7 +19,12 @@ let firstCard, secondCard, firstImage, secondImage, // Variables to store cards 
     time, timeInWords,
     timerStarter,
     finishedResetting = true,
-    star, starsNumber;
+    star, starsNumber,
+    noTwoCardsFlippedForTesting,
+    currentCard, 
+    currentCardIsNotFlipped,
+    secondCardIsFlipped,
+    rightCards;
 
 const zeroPadded = num => { // 5 => 05
     if ( num < 10 )
@@ -68,10 +73,22 @@ const removeFalseFlash = (...nodes) => {
         node.classList.remove('false-flash')
     }
 }
+const countMoves = () => {
+    moves++;
+    logMovesRecord( moves );
+}
 const logMovesRecord = moves => {
     for (const record of movesRecords) {
         record.textContent = moves + ((moves === 1) ? ' move' : ' moves');
     }  
+}
+const timeCounter = () => { // 00:05 => 00:06 => 00:07 ..
+    seconds++;
+    if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+    }
+    logTimeRecord(minutes, seconds);
 }
 const logTimeRecord = (minutes, seconds) => {
     time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
@@ -88,29 +105,12 @@ const resetStars = () => {
         record.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
     }
 }
-
-//shuffleCards();
-
-let noTwoCardsFlippedForTesting,
-    currentCard, 
-    currentCardIsNotFlipped,
-    secondCardIsFlipped,
-    rightCards;
-
 const startTimer = () => {
     if (timeRecord.textContent === '00:00') {
         seconds++;
         logTimeRecord(minutes, seconds);
         timerStarter = setInterval(timeCounter, 1000);
     }
-}
-const timeCounter = () => { // 00:05 => 00:06 => 00:07 ..
-    seconds++;
-    if (seconds === 60) {
-        minutes++;
-        seconds = 0;
-    }
-    logTimeRecord(minutes, seconds);
 }
 const prepareCardsForTesting = () => {
     if (firstCard === undefined) { // empty
@@ -120,10 +120,6 @@ const prepareCardsForTesting = () => {
         secondCard = currentCard;
         secondImage = currentCard.querySelector('img');
     }
-}
-const countMoves = () => {
-    moves++;
-    logMovesRecord( moves );
 }
 const determineStarsAndExpression = () => {
     starsNumber = starsRecords[0].children.length;
@@ -187,6 +183,20 @@ const emptyVariablesForSecondMove = () => {
         firstCard = secondCard = undefined;
     }, flashTime); // Wait until the flash ends, so we still can function on them (unflip).
 }
+const reset = () => {
+    removetrueEffects();
+    modal.classList.remove('pop-up');
+    moves = seconds = minutes = 0;
+    logMovesRecord( moves );
+    logTimeRecord(minutes, seconds);
+    clearInterval(timerStarter);
+    firstCard = undefined;  
+    finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
+    resetStars();
+    setTimeout(shuffleCards, flippingTime);
+}
+
+shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     noTwoCardsFlippedForTesting = secondCard === undefined; // The second variable is empty
@@ -208,20 +218,6 @@ grid.addEventListener('click', function( event ) {
         }
     }
 });
-
-/* --- Restart --- */
-const reset = () => {
-    removetrueEffects();
-    modal.classList.remove('pop-up');
-    moves = seconds = minutes = 0;
-    logMovesRecord( moves );
-    logTimeRecord(minutes, seconds);
-    clearInterval(timerStarter);
-    firstCard = undefined;  
-    finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
-    resetStars();
-    setTimeout(shuffleCards, flippingTime);
-}
 
 for (const button of resetButtons) {
     button.addEventListener('click', reset);
