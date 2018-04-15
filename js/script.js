@@ -181,7 +181,7 @@ const reset = () => {
     timer.textContent = time;
     clearInterval(startTimer);
     firstCard = undefined;
-    clickAllowed = false;
+    clickAllowed = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
     setTimeout(shuffleCards, flippingTime);
 }
 
