@@ -11,14 +11,16 @@ const grid = document.querySelector('.grid'),
       flashTime = 600,
       timeToReloadTheImage = 0,
       timer = document.querySelector('.timer'),
-      periodEl = document.querySelector('.period');
+      periodEl = document.querySelector('.period'),
+      ratings = document.querySelectorAll('.stars');
 
 let firstCard, secondCard, firstImage, secondImage,
     moves = 0,
     seconds = 0,
     minutes = 0,
     time, period, startTimer,
-    clickAllowed = true;
+    clickAllowed = true,
+    star, starsNumber;
 
 const zeroPadded = num => {
     if ( num < 10 )
@@ -82,8 +84,14 @@ const logMovesRecord = ( moves ) => {
         record.textContent = moves + ((moves === 1) ? ' move' : ' moves');
     }  
 }
+const removeStar = nodeList => {
+    for (const node of nodeList) {
+        star = node.lastElementChild;
+        star.remove();
+    }
+}
 
-shuffleCards();
+//shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     const noTwoCardsFlippedForTesting = secondCard === undefined;
@@ -109,6 +117,12 @@ grid.addEventListener('click', function( event ) {
                         secondImage = currentCard.querySelector('img');
                         moves++;
                         logMovesRecord( moves );
+                        starsNumber = ratings[0].children.length;
+                        if (moves > 12 && starsNumber === 3) {
+                            removeStar(ratings);
+                        } else if (moves > 16 && starsNumber === 2) {
+                            removeStar(ratings);
+                        }
                     }
                     return secondCard;
                 }
