@@ -17,7 +17,8 @@ let firstCard, secondCard, firstImage, secondImage,
     moves = 0,
     seconds = 0,
     minutes = 0,
-    time, period, startTimer;
+    time, period, startTimer,
+    clickAllowed = true;
 
 const zeroPadded = num => {
     if ( num < 10 )
@@ -43,6 +44,7 @@ const shuffleCards = () => {
         grid.appendChild(grid.children[randomNumber]);
         randomNumbers.push(randomNumber);
     }
+    clickAllowed = true;
 }
 const flip = (...nodes) => {
     for (const node of nodes) {
@@ -85,7 +87,7 @@ shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     const noTwoCardsFlippedForTesting = secondCard === undefined;
-    if ( noTwoCardsFlippedForTesting ) { // Making sure that the user doesn't flip a third card while two are being tested.
+    if ( noTwoCardsFlippedForTesting && clickAllowed ) { // Making sure that the user doesn't flip a third card while two are being tested.
         if ( event.target.parentElement.nodeName === 'LI') {
             const currentCard = event.target.parentElement;
             const currentCardIsFlipped = currentCard.classList.contains('flip');
@@ -174,10 +176,12 @@ const reset = () => {
     }
     modal.classList.remove('pop-up');
     moves = seconds = minutes = 0;
-    time = `${zeroPadded(seconds)}:${zeroPadded(minutes)}`;
     logMovesRecord( moves );
+    time = `${zeroPadded(seconds)}:${zeroPadded(minutes)}`;
     timer.textContent = time;
     clearInterval(startTimer);
+    firstCard = undefined;
+    clickAllowed = false;
     setTimeout(shuffleCards, flippingTime);
 }
 
