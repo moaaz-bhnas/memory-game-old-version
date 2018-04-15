@@ -1,7 +1,6 @@
 /* =================================================
     Game Grid
 ==================================================== */
-
 const grid = document.querySelector('.grid'),
       cards = document.querySelectorAll('.card'),
       modal = document.querySelector('.modal'),
@@ -187,7 +186,6 @@ grid.addEventListener('click', function( event ) {
 });
 
 /* --- Restart --- */
-
 const reset = () => {
     for (const card of cards) {
         unflip(card);

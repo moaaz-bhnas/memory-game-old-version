@@ -5,7 +5,6 @@
 body {
     font: 1rem/1.2 'Boogaloo', cursive;
     color: #275858;
-    text-align: center;
     background: #cae7e7;
 }
 
@@ -28,6 +27,7 @@ img {
     margin: .3em 0 .65em;
 }
 
+/*
 @media screen and (min-width: 260px) {
     .title {
         font-size: 2.5rem;
@@ -39,6 +39,7 @@ img {
         font-size: 3rem;
     }
 }
+*/
 
 /* ==============================================
     Options & Information
@@ -51,6 +52,7 @@ img {
     justify-content: space-evenly;
 }
 
+/* --- spot (page style) --- */
 .spot {
     font-size: 1.1rem;
     margin: 0;
@@ -60,18 +62,16 @@ img {
     border-radius: 1em;
 }
 
+/*
 @media screen and (min-width: 350px) {
     .spot {
         font-size: 1.3rem;
     }
 }
-
-/* --- Timer --- */
-
+*/
 
 /* --- Reset --- */
 .reset {
-    font-size: 1.3rem;
     cursor: pointer;
 }
 
@@ -86,16 +86,15 @@ img {
 /* --- Stars --- */
 .stars {
     color: #e6ea41;
+    font-size: 1rem;
 }
 
 /* ==============================================
     Grid
 ================================================= */
 .grid {
-    text-align: left;
     background-color: #60b8b8;
     width: 100vw;    height: 100vw;
-    margin-left: auto;    margin-right: auto;
     border-radius: .5rem;
     
     display: flex;
@@ -128,7 +127,7 @@ img {
 
 /* --- Back - Image --- */
 .back {
-    width: 99%;    height: 99%;
+    width: 99.9%;    height: 99.9%;
     object-fit: cover;
     object-position: 50% 0%;
     transform: rotateY(-180deg);
@@ -140,7 +139,6 @@ img {
     width: 100%;    height: 100%;
     background-color: #275858;
     backface-visibility: hidden;
-    cursor: pointer;
 }
 
 .front,
@@ -167,6 +165,7 @@ img {
     position: fixed;
     top: 50%;    left: 50%;
     transform: translate(-50%, -50%) scale(0);
+    
     opacity: 0;
     transition: transform .5s,
                 opacity .5s;
@@ -177,25 +176,27 @@ img {
     opacity: 1;
 }
 
+/* --- Result (moves and time) --- */
+.result {
+    font-size: 1.3rem;
+}
+
 /* --- Expression --- */
 img.expression {
     max-width: 150px;    height: 150px;
     margin: .8em 0 1em;
 }
 
+/*
 @media screen and (min-width: 380px) {
     img.expression {
         max-width: 200px;    height: 200px;
     }
 }
-
-/* --- Result --- */
-.result {
-    font-size: 1.3rem;
-}
+*/
 
 /* ==============================================
-    Keyframes
+    Animation
 ================================================= */
 @keyframes success-flash {
     0% {
@@ -250,10 +251,39 @@ img.expression {
 /* ==============================================
     Media Queries
 ================================================= */
+/* --- Title (Memory Game) --- */
+@media screen and (min-width: 260px) {
+    .title {
+        font-size: 2.5rem;
+    }
+}
+
+@media screen and (min-width: 380px) {
+    .title {
+        font-size: 3rem;
+    }
+}
+
+/* --- Information & Options (moves - timer - reset - rating) --- */
+@media screen and (min-width: 350px) {
+    .spot {
+        font-size: 1.3rem;
+    }
+}
+
+/* --- Image Expression (not bad - DUDE!) --- */
+@media screen and (min-width: 380px) {
+    img.expression {
+        max-width: 200px;    height: 200px;
+    }
+}
+
+/* --- Game Grid % font-size --- */
 @media screen and (min-width: 330px) {
     /* --- Game Grid Dimensions --- */
     .grid {
         width: 96vw;    height: 96vw;
+        margin-left: auto;    margin-right: auto;
     }
 }
 
@@ -277,8 +307,29 @@ img.expression {
     }
 }
 
+/* ==============================================
+    Shared Styles
+================================================= */
+/*
 
+.spot {
+    font-size: 1.1rem;
+    margin: 0;
+    background-color: #60b8b8;
+    padding: .4em .5em;
+    border: .15em solid #275858;
+    border-radius: 1em;
+}
 
+.front,
+.back {
+    position: absolute;
+    border-radius: .5rem;
+}
 
+.options-and-info,
+.modal {
+    max-width: 450px;
+}
 
-
+*/
