@@ -90,6 +90,11 @@ const removeStar = nodeList => {
         star.remove();
     }
 }
+const resetStars = () => {
+    for (const rating of ratings) {
+        rating.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+    }
+}
 
 shuffleCards();
 
@@ -196,6 +201,7 @@ const reset = () => {
     clearInterval(startTimer);
     firstCard = undefined;
     clickAllowed = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
+    resetStars();
     setTimeout(shuffleCards, flippingTime);
 }
 
