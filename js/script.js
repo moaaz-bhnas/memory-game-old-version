@@ -70,7 +70,7 @@ const removeFalseEffects = () => {
 const removetrueEffects = () => {
     for (const card of cards) {
         unflip(card);
-        removeTrueFlash(card);
+        removeTrueFlash(card.querySelector('img'));
     }
 }
 const removeTrueFlash = (...nodes) => {
@@ -196,7 +196,7 @@ const reset = () => {
     setTimeout(shuffleCards, flippingTime);
 }
 
-//shuffleCards();
+shuffleCards();
 
 /* --- Events --- */
 grid.addEventListener('click', function( event ) {
