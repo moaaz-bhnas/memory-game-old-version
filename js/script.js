@@ -3,16 +3,36 @@
 ==================================================== */
 
 const grid = document.querySelector('.grid'),
+      cards = document.querySelectorAll('.card'),
       modal = document.querySelector('.modal'),
-      resetButton = document.querySelector('.reset'),
+      resetButtons = document.querySelectorAll('.reset'),
       cardsNumber = grid.children.length,
       flippingTime = 550,
       flashTime = 600,
-      timeToReloadTheImage = 0;
+      timeToReloadTheImage = 0,
+      timer = document.querySelector('.timer'),
+      periodEl = document.querySelector('.period');
 
 let firstCard, secondCard, firstImage, secondImage,
-    moves = 0;
+    moves = 0,
+    seconds = 0,
+    minutes = 0,
+    time, period, startTimer;
 
+const zeroPadded = num => {
+    if ( num < 10 )
+        num = '0' + num;
+    return num;
+}
+const timeCounter = () => {
+    seconds++;
+    if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+    }
+    time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
+    timer.textContent = time;
+}
 const shuffleCards = () => {
     const randomNumbers = [];
     for (let i = 0; i < cardsNumber; i++) {
@@ -71,6 +91,12 @@ grid.addEventListener('click', function( event ) {
             const currentCardIsFlipped = currentCard.classList.contains('flip');
             if ( currentCardIsFlipped === false ) { // Don't allow testing already flipped card
                 flip(currentCard);
+                if (timer.textContent === '00:00') {
+                    seconds++;
+                    time = `${zeroPadded(minutes)}:${zeroPadded(seconds)}`;
+                    timer.textContent = time;
+                    startTimer = setInterval(timeCounter, 1000);
+                }
                 
                 const PackingVariablesForTesting = () => {
                     if (firstCard === undefined) { // empty
@@ -93,6 +119,7 @@ grid.addEventListener('click', function( event ) {
                                 successFlash(firstImage, secondImage);
                                 const rightCards = document.querySelectorAll('.flip');
                                 if (rightCards.length === 16) {
+                                    clearInterval(startTimer);
                                     (function popUp() {
                                         (function expressionPicker() {
                                             const expression = document.querySelector('.expression');
@@ -105,6 +132,14 @@ grid.addEventListener('click', function( event ) {
                                             } else {
                                                 expression.setAttribute('src', 'img/what.png');
                                             }
+                                            if (minutes > 0 && seconds > 0) {
+                                                period = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'} and ${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
+                                            } else if (minutes > 0 && seconds === 0) {
+                                                period = `${minutes} ${(minutes === 1) ? 'minute' : 'minutes'}`;
+                                            } else {
+                                                period = `${seconds} ${(seconds === 1) ? 'second' : 'seconds'}`;
+                                            }
+                                            periodEl.textContent = period;
                                         })();
                                         setTimeout(function() {
                                             modal.classList.add('pop-up')
@@ -132,17 +167,29 @@ grid.addEventListener('click', function( event ) {
 
 /* --- Restart --- */
 
-resetButton.addEventListener('click', function reset() {
-    const cards = document.querySelectorAll('.card');
+const reset = () => {
     for (const card of cards) {
         unflip(card);
         removeSuccessFlash(card.querySelector('img'));
     }
     modal.classList.remove('pop-up');
-    moves = 0;
+    moves = seconds = minutes = 0;
+    time = `${zeroPadded(seconds)}:${zeroPadded(minutes)}`;
     logMovesRecord( moves );
+    timer.textContent = time;
+    clearInterval(startTimer);
     setTimeout(shuffleCards, flippingTime);
-});
+}
+
+for (const button of resetButtons) {
+    button.addEventListener('click', reset);
+}
+
+
+
+
+
+
 
 
 

@@ -41,24 +41,40 @@ img {
 }
 
 /* ==============================================
-    Moves Record
+    Options & Information
 ================================================= */
-.moves-record {
-    font-size: 1.3rem;
-    margin: 0;
-}
-
-body > .moves-record {
-    display: inline-block;
+.options-and-info {
+    max-width: 450px;
+    margin-left: auto;    margin-right: auto;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .spot {
+    font-size: 1.3rem;
+    margin: 0;
     background-color: #60b8b8;
     padding: .4em .5em;
     border: .15em solid;
     border-radius: 1em;
 }
 
+/* --- Timer --- */
+
+
+/* --- Reset --- */
+.reset {
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.fa-undo {
+    transition: transform .3s;
+}
+
+.reset:hover .fa-undo {
+    transform: rotateZ(-20deg);
+}
 
 /* ==============================================
     Grid
@@ -152,7 +168,7 @@ body > .moves-record {
 /* --- Expression --- */
 .expression {
     max-width: 150px;    height: 150px;
-    padding: 1rem;
+    margin: 1rem;
 }
 
 @media screen and (min-width: 380px) {
@@ -161,18 +177,10 @@ body > .moves-record {
     }
 }
 
-/* --- Moves & Restart --- */
-.reset {
+/* --- Result --- */
+.result {
     font-size: 1.3rem;
-    cursor: pointer;
-}
-
-.fa-undo {
-    transition: transform .3s;
-}
-
-.reset:hover .fa-undo {
-    transform: rotateZ(-20deg);
+    margin-bottom: 0;
 }
 
 /* ==============================================

@@ -10,10 +10,15 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <h1 class="title">Memory Game</h1>
 
-    <p class="moves-record spot">0 moves</p>
+    <div class="options-and-info">
+        <p class="moves-record spot">0 moves</p>
+        <p class="timer spot">00:00</p>
+        <div class="reset spot" title="reset">
+            <i class="fas fa-undo"></i>
+        </div>
+    </div>
 
     <ul class="grid">
         <li class="card">
@@ -83,7 +88,7 @@
     </ul>
 
     <div class="modal">
-        <p class="moves-record"></p>
+        <p class="result"><span class="moves-record"></span> in <span class="period"></span></p>
         <img alt="Expression" class="expression">
         <div class="reset spot" title="reset">
             <i class="fas fa-undo"></i>
