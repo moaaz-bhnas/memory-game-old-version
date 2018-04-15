@@ -91,7 +91,7 @@ const removeStar = nodeList => {
     }
 }
 
-//shuffleCards();
+shuffleCards();
 
 grid.addEventListener('click', function( event ) {
     const noTwoCardsFlippedForTesting = secondCard === undefined;
