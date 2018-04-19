@@ -9,7 +9,8 @@ const grid = document.querySelector('.grid'),
       timeInWordsRecord = document.querySelector('.time-in-words'),
       expressionImage = document.querySelector('.expression-image'),
       flippingTime = 550,
-      flashTime = 600;
+      flashTime = 600,
+      popupTime = 500;
   
 
 let firstCard, secondCard, firstImage, secondImage, // Variables to store cards inside for testing
@@ -196,7 +197,7 @@ const reset = () => {
     firstCard = undefined;  
     finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
     resetStars();
-    resetExpressionImage();
+    setTimeout(resetExpressionImage, popupTime);
     setTimeout(shuffleCards, flippingTime);
 }
 
