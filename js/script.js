@@ -191,12 +191,14 @@ const reset = () => {
     removetrueEffects();
     modal.classList.remove('pop-up');
     moves = seconds = minutes = 0;
-    logMovesRecord( moves );
+    setTimeout(function() {
+        logMovesRecord( moves );
+    }, popupTime);
     logTimeRecord(minutes, seconds);
     clearInterval(timerStarter);
     firstCard = undefined;  
     finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
-    resetStars();
+    setTimeout(resetStars, popupTime);
     setTimeout(resetExpressionImage, popupTime);
     setTimeout(shuffleCards, flippingTime);
 }
