@@ -115,6 +115,9 @@ const resetStars = () => {
         record.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
     }
 }
+const resetExpressionImage = () => {
+    expressionImage.setAttribute('src', 'img/dude.png');  
+}  
 const startTimer = () => {
     if (timeRecord.textContent === '00:00') {
         seconds++;
@@ -193,6 +196,7 @@ const reset = () => {
     firstCard = undefined;  
     finishedResetting = false;   // Until the shuffling ends, so the card doesn't show in another place when the player clicks.
     resetStars();
+    resetExpressionImage();
     setTimeout(shuffleCards, flippingTime);
 }
 
