@@ -9,7 +9,7 @@
 https://moaaz-bhnas.github.io/memory-game-old-version/
  
 ## Screenshots
-![live preview](https://media.giphy.com/media/EQm0IFh2h4VgO1RD5T/giphy.gif)
+![live preview](https://media.giphy.com/media/1fYvIerlqZ9ibf1I8O/giphy.gif)
 
 ## Tech/framework used
 Only vanilla JavaScript
